@@ -42,7 +42,7 @@ class block_jawmentees extends block_base {
     }
 
     function get_content() {
-        global $CFG, $USER, $DB, $OUTPUT,$PAGE;
+        global $CFG, $USER, $DB, $OUTPUT, $PAGE;
 
         if ($this->content !== NULL) {
             return $this->content;
@@ -54,13 +54,14 @@ class block_jawmentees extends block_base {
         $this->content = new stdClass();
 
         // get all the mentees, i.e. users you have a direct assignment to
-        $allusernames = get_all_user_name_fields(true, 'u');
-        if ($usercontexts = $DB->get_records_sql("SELECT distinct c.instanceid, u.lastaccess, $allusernames
+        //$allusernames = get_all_user_name_fields(true, 'u');
+		$allusernamefields = \core_user\fields::for_name()->get_sql('u')->selects;
+        if ($usercontexts = $DB->get_records_sql("SELECT distinct c.instanceid, u.lastaccess $allusernamefields
                                                     FROM {role_assignments} ra, {context} c, {user} u
                                                    WHERE ra.userid = ?
                                                          AND ra.contextid = c.id
                                                          AND c.contextlevel = ?
-							 AND u.id != ra.userid
+														 AND u.id != ra.userid
                                                          AND c.instanceid = u.id
                                                          AND u.suspended = 0
                                                    ORDER BY u.lastname"
@@ -70,7 +71,7 @@ class block_jawmentees extends block_base {
             foreach ($usercontexts as $usercontext) {
 				$online = $usercontext->lastaccess > $timefrom;
 
-                $this->content->text .= '<li style="';
+                $this->content->text .= '<li style="clear:both;';
 				if($online) {
 					$this->content->text .= "list-style-image:url('".$OUTPUT->image_url('s/smiley')."');".'" title="online"';
 				} else {
@@ -78,7 +79,10 @@ class block_jawmentees extends block_base {
 //					$this->content->text .= 'list-style-type:\'-   \';" title="offline"';
 				}
 				$this->content->text .= '><a href="'.$CFG->wwwroot.'/user/view.php?id='.$usercontext->instanceid.'&amp;course='.SITEID.'">'.fullname($usercontext).'</a>';
-                $this->content->text .= ' <a class="jawmentors-message-icon" role="button" data-conversationid="0" data-userid="'.$usercontext->instanceid.'" class="btn" href="https://edu.jaw-moodle.de/message/index.php?id='.$usercontext->instanceid.'"><span><i class="icon fa fa-comment fa-fw iconsmall" title="Mitteilung" aria-label="Mitteilung"></i></span></a>';
+
+                $this->content->text .= ' <a class="jawmentees-message-icon float-right" role="button" data-conversationid="0" data-userid="'.$usercontext->instanceid.'" class="btn" href="https://edu.jaw-moodle.de/message/index.php?id='.$usercontext->instanceid.'"><span><i class="icon fa fa-comment fa-fw iconsmall" title="Mitteilung" aria-label="Mitteilung"></i></span></a>';
+				
+
 				//JH: eventuell Kurs-ID verwenden (vorher abfragen, ob TN eingeschrieben ist!)
 //				$this->content->text .= '><a href="'.$CFG->wwwroot.'/user/view.php?id='.$usercontext->instanceid.'&amp;course='.$this->page->course->id.'">'.fullname($usercontext).'</a>';
 				$this->content->text .= '</li>';
@@ -87,7 +91,7 @@ class block_jawmentees extends block_base {
         }
 
         $this->content->footer = '';
-
+		
         $PAGE->requires->js_amd_inline(
             "require(['jquery', 'core/custom_interaction_events', 'core_message/message_drawer_helper'],
     function($, CustomEvents, MessageDrawerHelper) {
