@@ -18,7 +18,7 @@
  * Form for editing Mentees block instances.
  *
  * @package   block_jawmentees
- * @copyright 2009 Tim Hunt
+ * @copyright 2009 Tim Hunt, 2021 Jakob Heinemann
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
