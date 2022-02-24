@@ -25,8 +25,8 @@
 
 $string['configtitle'] = 'JAW Mentees Block Titel';
 $string['configtitleblankhides'] = 'JAW Mentees Block Titel (kein Titel wenn leer)';
-$string['mentees:addinstance'] = 'neuen JAW Mentees-Block hinzufügen';
-$string['mentees:myaddinstance'] = 'neuen JAW Mentees-Block zum Dashboard hinzufügen';
+$string['jawmentees:addinstance'] = 'neuen JAW Mentees-Block hinzufügen';
+$string['jawmentees:myaddinstance'] = 'neuen JAW Mentees-Block zum Dashboard hinzufügen';
 $string['newmenteesblock'] = '(neuer JAW Mentees-Block)';
 $string['pluginname'] = 'JAW-Mentees';
 $string['privacy:metadata'] = 'Der JAW Mentees-Block zeigt nur an anderen Stellen gespeicherte Daten an.';
